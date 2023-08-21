@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
+
+
 /*
 Read environment variables from file.
 https://github.com/motdotla/dotenv
@@ -35,7 +37,10 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  // reporter: "html",
+  reporter: [
+    ['list', { printSteps: true }],
+    ['html', { outputDir: "./test-results" }]
+  ],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 
@@ -43,9 +48,10 @@ export default defineConfig({
   use: {
     // /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'https://thinking-tester-contact-list.herokuapp.com/',
+    // baseURL: process.env.API === '1' ? 'https://jsonplaceholder.typicode.com' : 'https://thinking-tester-contact-list.herokuapp.com/',
 
     // Enable to Run Headless
-    headless: false,
+    headless: true,
 
     //This is for Playwright commands (click(), type(), fill())
     actionTimeout: 10000, //15 seconds
@@ -103,7 +109,7 @@ export default defineConfig({
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  outputDir: "./test-results",
+  // outputDir: "./test-results",
 
   /* Run your local dev server before starting the tests */
   // webServer: {
