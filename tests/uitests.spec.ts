@@ -1,9 +1,12 @@
 import { test } from "@playwright/test";
-import LoginPage from "../page-objects/pages/login.page";
-import ContactListPage from "../page-objects/pages/contactList.page";
-import AddContactPage from "../page-objects/pages/addContact.page";
-import ViewContactPage from "../page-objects/pages/viewContact.page";
-import EditContactPage from "../page-objects/pages/editContact.page";
+import LoginPage from "../pages/login.page";
+import ContactListPage from "../pages/contactList.page";
+import AddContactPage from "../pages/addContact.page";
+import ViewContactPage from "../pages/viewContact.page";
+import EditContactPage from "../pages/editContact.page";
+import fs from 'fs';
+import path from 'path';
+import { parse } from 'csv-parse/sync';
 
 
 // Go to the starting url before each test
@@ -25,7 +28,8 @@ test.describe('Login Validation', () => {
 
         await test.step('User Successfully Logs In', async () => {
             
-            await loginPage.validLogin();
+            await loginPage.inputValidLoginCredentials();
+            await loginPage.submitLoginCredentials();
 
         })
 
@@ -48,13 +52,15 @@ test.describe('Positive Test Validation', () => {
 
         await test.step('User Successfully Logs In', async () => {
             
-            await loginPage.validLogin();
+            await loginPage.inputValidLoginCredentials();
+            await loginPage.submitLoginCredentials();
 
         })
 
         await test.step('Add New Contact to Contact List', async () => {
             
-            await addContactPage.addNewContactToList();
+            await contactListPage.clickAddContactBtn();
+            await addContactPage.createNewContact();
 
         })
 
@@ -74,13 +80,14 @@ test.describe('Negative Test Validation', () => {
 
         await test.step('Submit Invalid Login Credentials', async () => {
 
-            await loginPage.invalidLogin();
+            await loginPage.inputInvalidLoginCredentials();
+            await loginPage.submitLoginCredentials();
 
         })
 
         await test.step('Validate User Receives Error Trying to Login', async () => {
 
-            await loginPage.assertInvalidLoginError();
+            await loginPage.assertInvalidLoginErrorMsg();
 
         })
     })
@@ -99,7 +106,8 @@ test.describe('End to End Validation', () => {
 
         await test.step('User Successfully Logs In', async () => {
             
-            await loginPage.validLogin();
+            await loginPage.inputValidLoginCredentials();
+            await loginPage.submitLoginCredentials();
 
         })
 
@@ -111,28 +119,33 @@ test.describe('End to End Validation', () => {
 
         await test.step('Add New Contact to Contact List', async () => {
                 
-            await addContactPage.addNewContactToList();
+            await contactListPage.clickAddContactBtn();
+            await addContactPage.createNewContact();
     
         })
     
         await test.step('Validate New Contact is Found on List', async () => {
     
             await contactListPage.assertNewContactFoundOnList();
-    
+
         })
 
         await test.step('Click Contact from List to Edit', async () => {
 
             await contactListPage.clickOnContactFromList();
-            await viewContactPage.clickEditContactButton();
+            await viewContactPage.clickEditContactBtn();
 
         })
 
         await test.step('Edit Contact Information', async () => {
 
-            await editContactPage.submitEditedContactDetails();
+            await editContactPage.editContactDetails();
+            await editContactPage.submitContactDetails();
 
         })
 
     })
 })
+
+
+
