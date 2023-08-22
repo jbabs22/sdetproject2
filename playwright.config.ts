@@ -1,7 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-
-
 /*
 Read environment variables from file.
 https://github.com/motdotla/dotenv
@@ -38,8 +36,8 @@ export default defineConfig({
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['list', { printSteps: true }],
-    ['html', { outputDir: "./test-results" }]
+    ["list", { printSteps: true }],
+    ["html", { outputDir: "./test-results" }],
   ],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -66,7 +64,7 @@ export default defineConfig({
     screenshot: "only-on-failure",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-   //trace: "retain-on-failure",
+    //trace: "retain-on-failure",
     trace: "on",
   },
 
